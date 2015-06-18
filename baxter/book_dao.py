@@ -1,4 +1,7 @@
 import mysql.connector
+from collections import namedtuple
+
+Section = namedtuple('Section', 'author title section_title section_text')
 
 
 def save_all(sections):
@@ -8,15 +11,13 @@ def save_all(sections):
 
     cursor = cnx.cursor()
 
-    insert = """INSERT INTO books.book_staging
-                (author, title, section_title, section_text)
-                VALUES ('Owen','Mortification','1','KILL,KILL')"""
+    insert = """
+        INSERT INTO books.book_staging
+        (author, title, section_title, section_text)
+        VALUES (%(author)s, %(title)s, %(section_title)s, %(section_text)s)
+    """
 
-    cursor.execute(insert)
-    print(cursor.lastrowid)
+    cursor.executemany(insert, sections)
     cnx.commit()
     cursor.close()
     cnx.close()
-
-if __name__ == '__main__':
-    save_all(['asdf'])
