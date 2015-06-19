@@ -18,14 +18,21 @@ WHTIE_ENDS = r"[ \t]*\n[ \t]*"
 
 
 def extract_headers(chunks):
-    for c in chunks:
+    current_chapter = ''
+    author = "Richard Baxter"
+    title = "Reformed Pastor"
+    sections = []
+    for c in chunks[3:-3]:
         if is_major_section(c):
-            print("M" + clean_major_section(c))
+            current_chapter = clean_major_section(c)
         elif is_minor_section(c):
-            print("m" + clean_minor_section(c)[0])
+            stitle, stext = clean_minor_section(c)
+            section_title = "%s %s" % (current_chapter, stitle)
+            d = {'author': author, 'title': title, 'section_title': section_title, 'section_text': stext}
+            sections.append(d)
         else:
-            print("\n\n>>>%s<<<\n\n" % c)
-
+            print("WARNING: didn't know what to do with: %s" % c)
+    return sections
 
 def is_major_section(chunk):
     return MAJOR_SECTION_PATTERN.match(chunk) is not None
@@ -41,4 +48,4 @@ def is_minor_section(chunk):
 
 def clean_minor_section(s):
     [head, tail] = re.split(BLANK_LINE, s, 1)
-    return head, ' '.join(re.split(WHTIE_ENDS,tail))
+    return ' '.join(re.split(WHTIE_ENDS,head)), ' '.join(re.split(WHTIE_ENDS,tail))

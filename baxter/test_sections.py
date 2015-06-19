@@ -82,4 +82,11 @@ def test_dedication():
 
 
 def test_clean_minor_section_with_long_name():
-    assert True
+    passage = """SECTION 2 - THE DUTY OF PERSONAL CATECHIZING AND INSTRUCTING THE FLOCK
+  PARTICULARLY RECOMMENDED
+
+   Having disclosed and lamented our miscarriages and neglects, our duty
+   for the future lies plain before us. God forbid that we should now go
+   on in the sins which we have confessed, as carelessly as we did before."""
+
+    assert "SECTION 2 - THE DUTY OF PERSONAL CATECHIZING AND INSTRUCTING THE FLOCK PARTICULARLY RECOMMENDED" == clean_minor_section(passage)[0]
