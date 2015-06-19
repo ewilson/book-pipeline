@@ -64,3 +64,22 @@ def test_clean_minor_section():
     assert ("SECTION 1 -- THE NATURE OF THIS OVERSIGHT",
             "Having showed you, What it is to take heed to ourselves, I am to show you, next to all the flock in proportion to the measure of their sin.") == \
         clean_minor_section(passage)
+
+
+def test_dedication():
+    passage = """DEDICATION
+
+   To my bretheren and dearly-beloved brethren, the faithful ministers of
+   Christ, in Britain and Ireland, Grace and Peace in Jesus Christ be
+   increase
+
+  REVEREND BRETHREN
+
+   The subject of this treatise so nearly concerneth yourselves, and the
+   churches committed to your care, that it emboldeneth me to this"""
+
+    assert is_minor_section(passage)
+
+
+def test_clean_minor_section_with_long_name():
+    assert True
