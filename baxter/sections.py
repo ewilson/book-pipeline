@@ -13,6 +13,8 @@ MINOR_SECTION_PATTERN = re.compile(r"""^[A-Z]                      # First chara
                                        [ \t]*[A-Z][a-z ]+    # third line has lowercase letters
                                        """, re.VERBOSE)
 
+LC_PATTERN = re.compile(r'.*[a-z]+.*')
+
 BLANK_LINE = r"[ \t]*\n[ \t]*\n[ \t]*"
 WHTIE_ENDS = r"[ \t]*\n[ \t]*"
 
@@ -27,7 +29,7 @@ def extract_headers(chunks):
             current_chapter = clean_major_section(c)
         elif is_minor_section(c):
             stitle, stext = clean_minor_section(c)
-            section_title = "%s %s" % (current_chapter, stitle)
+            section_title = "%s %s" % (current_chapter, stitle) if len(current_chapter) > 0 else stitle
             d = {'author': author, 'title': title, 'section_title': section_title, 'section_text': stext}
             sections.append(d)
         else:
@@ -47,5 +49,11 @@ def is_minor_section(chunk):
 
 
 def clean_minor_section(s):
-    [head, tail] = re.split(BLANK_LINE, s, 1)
+    parts = re.split(BLANK_LINE, s, 2)
+    if LC_PATTERN.match(parts[1]) is not None:
+        head = parts[0]
+        tail = ' '.join(parts[1:])
+    else:
+        head = ' '.join(parts[:2])
+        tail = parts[2] if len(parts) == 3 else ""
     return ' '.join(re.split(WHTIE_ENDS,head)), ' '.join(re.split(WHTIE_ENDS,tail))

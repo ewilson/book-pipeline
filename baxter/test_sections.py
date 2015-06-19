@@ -90,3 +90,15 @@ def test_clean_minor_section_with_long_name():
    on in the sins which we have confessed, as carelessly as we did before."""
 
     assert "SECTION 2 - THE DUTY OF PERSONAL CATECHIZING AND INSTRUCTING THE FLOCK PARTICULARLY RECOMMENDED" == clean_minor_section(passage)[0]
+
+
+def test_clean_minor_section_with_double_header():
+    passage = """ARTICLE 4
+
+  APPLICATION OF THESE MOTIVES
+
+   Having found so many and so powerful reasons to move us to this work, I
+   shall now apply them further for our humiliation and excitation."""
+
+    assert is_minor_section(passage)
+    assert clean_minor_section(passage)[0] == "ARTICLE 4 APPLICATION OF THESE MOTIVES"
