@@ -1,5 +1,5 @@
-import sections
-import book_dao
+import baxter.sections as sections
+import baxter.book_dao as book_dao
 
 DELIM = '__________________________________________________________________'
 
