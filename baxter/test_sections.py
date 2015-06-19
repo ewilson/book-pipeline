@@ -54,3 +54,13 @@ def test_is_not_minor_section():
     assert not is_minor_section(passage)
 
 
+def test_clean_minor_section():
+    passage = """SECTION 1 -- THE NATURE OF THIS OVERSIGHT
+
+   Having showed you, What it is to take heed to ourselves, I am to show
+   you, next to all the flock in proportion to the measure
+   of their sin."""
+
+    assert ("SECTION 1 -- THE NATURE OF THIS OVERSIGHT",
+            "Having showed you, What it is to take heed to ourselves, I am to show you, next to all the flock in proportion to the measure of their sin.") == \
+        clean_minor_section(passage)
