@@ -13,8 +13,8 @@ def save_all(sections):
 
     insert = """
         INSERT INTO books.book_staging
-        (author, title, section_title, section_text)
-        VALUES (%(author)s, %(title)s, %(section_title)s, %(section_text)s)
+        (id, section_id, author, title, section_title, section_text, para_text)
+        VALUES (%(id)s, %(section_id)s, %(author)s, %(title)s, %(section_title)s, %(section_text)s, %(para_text)s)
     """
 
     cursor.executemany(insert, sections)

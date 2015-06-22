@@ -62,7 +62,7 @@ def test_clean_minor_section():
    of their sin."""
 
     assert ("SECTION 1 -- THE NATURE OF THIS OVERSIGHT",
-            "Having showed you, What it is to take heed to ourselves, I am to show you, next to all the flock in proportion to the measure of their sin.") == \
+            ["Having showed you, What it is to take heed to ourselves, I am to show you, next to all the flock in proportion to the measure of their sin."]) == \
         clean_minor_section(passage)
 
 
@@ -92,7 +92,7 @@ def test_clean_minor_section_with_long_name():
     assert "SECTION 2 - THE DUTY OF PERSONAL CATECHIZING AND INSTRUCTING THE FLOCK PARTICULARLY RECOMMENDED" == clean_minor_section(passage)[0]
 
 
-def test_clean_minor_section_with_double_header():
+def _test_clean_minor_section_with_double_header():
     passage = """ARTICLE 4
 
   APPLICATION OF THESE MOTIVES
@@ -102,3 +102,38 @@ def test_clean_minor_section_with_double_header():
 
     assert is_minor_section(passage)
     assert clean_minor_section(passage)[0] == "ARTICLE 4 APPLICATION OF THESE MOTIVES"
+
+
+def test_clean_ends():
+    passage = """SECTION 2 - THE DUTY OF PERSONAL CATECHIZING AND INSTRUCTING THE FLOCK
+PARTICULARLY RECOMMENDED
+
+Having disclosed and lamented our miscarriages and neglects, our duty
+for the future lies plain before us. God forbid that we should now go
+on in.
+
+First, I shall state to you some motives to persuade you to this duty.
+
+Secondly, I shall answer some objections which may be made to this
+duty."""
+
+    assert clean_ends(passage) == ["SECTION 2 - THE DUTY OF PERSONAL CATECHIZING AND INSTRUCTING THE FLOCK PARTICULARLY RECOMMENDED",
+"Having disclosed and lamented our miscarriages and neglects, our duty for the future lies plain before us. God forbid that we should now go on in.",
+"First, I shall state to you some motives to persuade you to this duty.",
+"Secondly, I shall answer some objections which may be made to this duty."]
+
+
+def test_clean_minor_section_with_three_para():
+    passage = """SECTION 1 -- THE NATURE OF THIS OVERSIGHT
+
+   Having showed you, What it is to take heed to ourselves, I am to show
+   you, next to all the flock in proportion to the measure
+
+   Another paragraph
+
+   And three"""
+
+    assert ("SECTION 1 -- THE NATURE OF THIS OVERSIGHT",
+            ["Having showed you, What it is to take heed to ourselves, I am to show you, next to all the flock in proportion to the measure",
+             "Another paragraph","And three"]) == clean_minor_section(passage)
+
